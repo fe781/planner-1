@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  color: #425B9A;
+}
+
+.todo-page {
+  width: 100%;
+  padding: 20px;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.page-title {
+  display: inline-block;
+
+  margin: 0 0 18px;
+
+  padding: 7px 16px;
+
+  border-radius: 10px;
+
+  background: #FFF6DC;
+
+  color: #76C0EC;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+.date-box {
+  margin-bottom: 20px;
+}
+
+.date-box label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #425B9A;
+}
+
+.date-input {
+  padding: 8px 11px;
+
+  border: 1.5px solid #76C0EC;
+  border-radius: 9px;
+
+  outline: none;
+
+  background: white;
+
+  color: #425B9A;
+
+  font-family: inherit;
+}
+
+
+/* =========================
+   TASK SECTIONS
+========================= */
+
+.task-section {
+  margin-bottom: 18px;
+}
+
+.section-title {
+  margin: 0 0 8px;
+
+  color: #425B9A;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.task-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.task-input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 10px 12px;
+
+  border: 1.5px solid #76C0EC;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: white;
+
+  color: #425B9A;
+
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.task-input:focus {
+  border-color: #76C0EC;
+}
+
+.task-input::placeholder {
+  color: #9aaac2;
+}
+
+.add-btn {
+  padding: 8px 14px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #76C0EC;
+
+  color: white;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================
+   TASK LIST
+========================= */
+
+.task-list {
+  margin-top: 8px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 8px 10px;
+
+  margin-bottom: 6px;
+
+  border-radius: 9px;
+
+  background: rgba(255,255,255,0.72);
+
+  font-size: 13px;
+}
+
+.task input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+
+  accent-color: #76C0EC;
+
+  cursor: pointer;
+}
+
+.task-text {
+  flex: 1;
+
+  word-break: break-word;
+}
+
+.task.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.delete-task {
+  border: none;
+  background: transparent;
+
+  color: #9aaac2;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.delete-task:hover {
+  color: #425B9A;
+}
+
+
+/* =========================
+   NOTE
+========================= */
+
+.note-box {
+  margin-top: 22px;
+
+  padding: 16px;
+
+  border: 2px solid #76C0EC;
+  border-radius: 15px;
+
+  background: white;
+}
+
+.note-title {
+  margin: 0 0 8px;
+
+  color: #76C0EC;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.note-area {
+  width: 100%;
+  min-height: 110px;
+
+  resize: vertical;
+
+  padding: 10px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #425B9A;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.note-area::placeholder {
+  color: #a5b3c8;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+  .todo-page {
+    padding: 12px;
+  }
+
+  .task-input-row {
+    flex-direction: column;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="todo-page">
+
+  <!-- TITLE -->
+  <h1 class="page-title">
+    TODO LIST
+  </h1>
+
+
+  <!-- DATE -->
+  <div class="date-box">
+
+    <label for="datePicker">
+      DATE
+    </label>
+
+    <input
+      type="date"
+      id="datePicker"
+      class="date-input"
+    >
+
+  </div>
+
+
+  <!-- MUST -->
+  <div class="task-section">
+
+    <h2 class="section-title">
+      MUST
+    </h2>
+
+    <div class="task-input-row">
+
+      <input
+        id="mustInput"
+        class="task-input"
+        placeholder="What must be done?"
+      >
+
+      <button
+        class="add-btn"
+        onclick="addTask('must')"
+      >
+        +
+      </button>
+
+    </div>
+
+    <div
+      id="mustList"
+      class="task-list"
+    ></div>
+
+  </div>
+
+
+  <!-- SHOULD -->
+  <div class="task-section">
+
+    <h2 class="section-title">
+      SHOULD
+    </h2>
+
+    <div class="task-input-row">
+
+      <input
+        id="shouldInput"
+        class="task-input"
+        placeholder="What should be done?"
+      >
+
+      <button
+        class="add-btn"
+        onclick="addTask('should')"
+      >
+        +
+      </button>
+
+    </div>
+
+    <div
+      id="shouldList"
+      class="task-list"
+    ></div>
+
+  </div>
+
+
+  <!-- EXTRA -->
+  <div class="task-section">
+
+    <h2 class="section-title">
+      EXTRA
+    </h2>
+
+    <div class="task-input-row">
+
+      <input
+        id="extraInput"
+        class="task-input"
+        placeholder="Anything extra?"
+      >
+
+      <button
+        class="add-btn"
+        onclick="addTask('extra')"
+      >
+        +
+      </button>
+
+    </div>
+
+    <div
+      id="extraList"
+      class="task-list"
+    ></div>
+
+  </div>
+
+
+  <!-- NOTE -->
+  <div class="note-box">
+
+    <h2 class="note-title">
+      NOTE
+    </h2>
+
+    <textarea
+      id="noteArea"
+      class="note-area"
+      placeholder="Write something here..."
+    ></textarea>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+const STORAGE_KEY = "feverTodoData";
+
+let data = JSON.parse(
+  localStorage.getItem(STORAGE_KEY) || "{}"
+);
+
+let currentDate;
+
+
+/* =========================
+   DATE
+========================= */
+
+const datePicker =
+  document.getElementById("datePicker");
+
+
+function getToday() {
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
+
+  const day =
+    String(now.getDate())
+      .padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+currentDate = getToday();
+
+datePicker.value = currentDate;
+
+loadDate();
+
+
+datePicker.addEventListener(
+  "change",
+  function() {
+
+    currentDate = this.value;
+
+    loadDate();
+
+  }
+);
+
+
+/* =========================
+   CREATE DATE DATA
+========================= */
+
+function getDateData() {
+
+  if (!data[currentDate]) {
+
+    data[currentDate] = {
+
+      must: [],
+      should: [],
+      extra: [],
+
+      note: ""
+
+    };
+
+  }
+
+  return data[currentDate];
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function saveData() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(data)
+  );
+
+}
+
+
+/* =========================
+   LOAD DATE
+========================= */
+
+function loadDate() {
+
+  const dayData =
+    getDateData();
+
+  renderTasks(
+    "must",
+    dayData.must
+  );
+
+  renderTasks(
+    "should",
+    dayData.should
+  );
+
+  renderTasks(
+    "extra",
+    dayData.extra
+  );
+
+  document
+    .getElementById("noteArea")
+    .value = dayData.note;
+
+  saveData();
+
+}
+
+
+/* =========================
+   ADD TASK
+========================= */
+
+function addTask(type) {
+
+  const input =
+    document.getElementById(
+      type + "Input"
+    );
+
+  const text =
+    input.value.trim();
+
+  if (!text) return;
+
+  const dayData =
+    getDateData();
+
+  dayData[type].push({
+
+    text: text,
+
+    completed: false
+
+  });
+
+  input.value = "";
+
+  saveData();
+
+  renderTasks(
+    type,
+    dayData[type]
+  );
+
+}
+
+
+/* =========================
+   ENTER TO ADD
+========================= */
+
+["must", "should", "extra"].forEach(
+  function(type) {
+
+    document
+      .getElementById(type + "Input")
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (event.key === "Enter") {
+
+            addTask(type);
+
+          }
+
+        }
+      );
+
+  }
+);
+
+
+/* =========================
+   RENDER TASKS
+========================= */
+
+function renderTasks(type, tasks) {
+
+  const list =
+    document.getElementById(
+      type + "List"
+    );
+
+  list.innerHTML = "";
+
+  tasks.forEach(
+    function(task, index) {
+
+      const taskElement =
+        document.createElement("div");
+
+      taskElement.className =
+        "task";
+
+      if (task.completed) {
+
+        taskElement.classList.add(
+          "completed"
+        );
+
+      }
+
+
+      taskElement.innerHTML = `
+
+        <input
+          type="checkbox"
+          ${task.completed ? "checked" : ""}
+          onchange="
+            toggleTask('${type}', ${index})
+          "
+        >
+
+        <span class="task-text">
+          ${escapeHTML(task.text)}
+        </span>
+
+        <button
+          class="delete-task"
+          onclick="
+            deleteTask('${type}', ${index})
+          "
+        >
+          ×
+        </button>
+
+      `;
+
+      list.appendChild(
+        taskElement
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   CHECK TASK
+========================= */
+
+function toggleTask(type, index) {
+
+  const dayData =
+    getDateData();
+
+  dayData[type][index].completed =
+    !dayData[type][index].completed;
+
+  saveData();
+
+  renderTasks(
+    type,
+    dayData[type]
+  );
+
+}
+
+
+/* =========================
+   DELETE TASK
+========================= */
+
+function deleteTask(type, index) {
+
+  const dayData =
+    getDateData();
+
+  dayData[type].splice(
+    index,
+    1
+  );
+
+  saveData();
+
+  renderTasks(
+    type,
+    dayData[type]
+  );
+
+}
+
+
+/* =========================
+   NOTE
+========================= */
+
+document
+  .getElementById("noteArea")
+  .addEventListener(
+    "input",
+    function() {
+
+      const dayData =
+        getDateData();
+
+      dayData.note =
+        this.value;
+
+      saveData();
+
+    }
+  );
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+</html>
